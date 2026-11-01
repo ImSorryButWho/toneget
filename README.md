@@ -184,3 +184,11 @@ python tonal_to_garmin.py
 
 If your Garmin account uses MFA, run `python fetch_garmin.py` once interactively with the
 same `GARMIN_TOKEN_DIR` to cache login tokens; unattended runs reuse them.
+
+## Home Assistant add-on
+
+`tonal_garmin_sync/` packages `tonal_to_garmin.py` as a Home Assistant add-on that runs
+on a schedule. Add this repository under Settings > Add-ons > Add-on Store > Repositories.
+The add-on copies its Python sources into `tonal_garmin_sync/app/`; after changing any of
+them run `./sync_addon_sources.sh` (and `./sync_addon_sources.sh --check` to verify).
+See `tonal_garmin_sync/DOCS.md` for setup.

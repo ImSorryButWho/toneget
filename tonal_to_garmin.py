@@ -152,6 +152,7 @@ def process_match(client, act: dict, tonal: dict, tonal_json: Path, original: Pa
 
     if dry_run:
         log(f"Dry run: not uploading or deleting. Activity would be named: {tonal.get('_title') or act.get('activityName')!r}")
+        state.setdefault("dry_run_done", []).append(activity_id)  # don't redo this every cycle
         return
 
     timeout = int(os.environ.get("UPLOAD_WAIT", 120))
@@ -192,6 +193,7 @@ def process_match(client, act: dict, tonal: dict, tonal_json: Path, original: Pa
     except Exception as e:
         log(f"Could not copy activity name (not critical): {e}")
 
+    state.setdefault("enriched", []).append(new_id)
     state["processed"][tonal["id"]] = {"garmin_original": activity_id, "garmin_new": new_id,
                                        "at": datetime.now().isoformat()}
     save_state(state)
@@ -283,11 +285,22 @@ def main() -> int:
     for d in (DATA_DIR, BACKUP_DIR, OUTPUT_DIR):
         d.mkdir(parents=True, exist_ok=True)
     state = load_state()
+    enriched = set(state.get("enriched", []))  # Garmin activities already known to have sets
+    try:
+        return _run(dry_run, state, enriched)
+    finally:
+        state["enriched"] = sorted(enriched | set(state.get("enriched", [])))[-500:]
+        state["dry_run_done"] = state.get("dry_run_done", [])[-200:]
+        save_state(state)
 
+
+def _run(dry_run: bool, state: dict, enriched: set) -> int:
     # Garmin first: if there is nothing to enrich, don't bother Tonal.
     client = fetch_garmin.login()
-    garmin_acts = fetch_garmin.unenriched_strength_activities(  # lazy, newest first
-        client, int(os.environ.get("GARMIN_SCAN", 30)))
+    dry_done = set(state.get("dry_run_done", [])) if dry_run else set()
+    garmin_acts = (a for a in fetch_garmin.unenriched_strength_activities(  # lazy, newest first
+        client, int(os.environ.get("GARMIN_SCAN", 30)), known_enriched=enriched)
+        if a["activityId"] not in dry_done)
     first = next(garmin_acts, None)
     if first is None:
         log("No unenriched Garmin strength activities. Nothing to do.")
