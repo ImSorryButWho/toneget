@@ -27,6 +27,7 @@ has confirmed the upload. A Tonal workout is never processed twice.
 import itertools
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -37,13 +38,19 @@ from fit_tool.profile.messages.set_message import SetMessage
 from fit_tool.profile.profile_type import SetType
 
 import fetch_garmin
-from sync_workouts import authenticate, download_workouts, get_user_info
+import requests
+
+from movement_map import MOVEMENT_MAP
+from sync_workouts import API_BASE, authenticate, download_workouts, get_user_info, get_workout_template
 from tonal2fit import merge_tonal_and_garmin, TONAL_REST_ID
+from update_movements import trim
 
 DATA_DIR = Path(os.environ.get("DATA_DIR", "data"))
 BACKUP_DIR = DATA_DIR / "backups"
 OUTPUT_DIR = DATA_DIR / "combined"
 STATE_FILE = DATA_DIR / "state.json"
+CATALOG_CACHE = DATA_DIR / "movements_cache.json"
+CATALOG_SNAPSHOT = Path(__file__).parent / "tonal_movements.json"
 
 
 def log(msg: str) -> None:
@@ -144,7 +151,7 @@ def process_match(client, act: dict, tonal: dict, tonal_json: Path, original: Pa
     log(f"Built {combined.name}: {count} active sets")
 
     if dry_run:
-        log("Dry run: not uploading or deleting.")
+        log(f"Dry run: not uploading or deleting. Activity would be named: {tonal.get('_title') or act.get('activityName')!r}")
         return
 
     timeout = int(os.environ.get("UPLOAD_WAIT", 120))
@@ -178,9 +185,10 @@ def process_match(client, act: dict, tonal: dict, tonal_json: Path, original: Pa
         log(f"Confirmed new activity {new_id}; deleting original {activity_id}.")
         client.delete_activity(activity_id)
 
-    try:  # keep the original title
-        if act.get("activityName"):
-            client.set_activity_name(str(new_id), act["activityName"])
+    try:  # name it after the Tonal workout, falling back to the original Garmin name
+        name = tonal.get("_title") or act.get("activityName")
+        if name:
+            client.set_activity_name(str(new_id), name)
     except Exception as e:
         log(f"Could not copy activity name (not critical): {e}")
 
@@ -188,6 +196,73 @@ def process_match(client, act: dict, tonal: dict, tonal_json: Path, original: Pa
                                        "at": datetime.now().isoformat()}
     save_state(state)
     log("Done.")
+
+
+# --- movement catalog --------------------------------------------------------
+
+def _load_catalog(path: Path) -> dict:
+    return {m["id"]: m for m in json.loads(path.read_text())} if path.exists() else {}
+
+
+def check_movements(id_token: str, workouts: list) -> frozenset:
+    """Log movements we can't map, and find barbell movements new since the last snapshot.
+
+    Tonal's movement catalog is only downloaded when a workout contains an ID that is
+    in neither movement_map.py, the shipped tonal_movements.json snapshot, nor the
+    local cache from an earlier download, so normal runs make no extra requests.
+    Returns the IDs of straight-bar movements missing from BARBELL_MOVEMENTS.
+    """
+    known = _load_catalog(CATALOG_SNAPSHOT)
+    known.update(_load_catalog(CATALOG_CACHE))
+    used = {b.get("movementId") for w in workouts for b in w.get("workoutSetActivity", [])}
+    used.discard(None)
+    if any(i not in MOVEMENT_MAP and i not in known for i in used):
+        log("Workout has movement(s) not seen before; downloading Tonal's movement catalog (once).")
+        r = requests.get(f"{API_BASE}/v6/movements", headers={"Authorization": f"Bearer {id_token}"}, timeout=60)
+        r.raise_for_status()
+        fresh = {m["id"]: trim(m) for m in r.json()}
+        known.update(fresh)
+        CATALOG_CACHE.write_text(json.dumps(list(known.values())))
+    for i in sorted(used):
+        if i in MOVEMENT_MAP or i == TONAL_REST_ID:
+            continue
+        m = known.get(i)
+        log(f"No Garmin mapping for movement {i} ({m['name'] if m else 'not in Tonal catalog'}); "
+            f"its sets will have no exercise type. Add it to movement_map.py.")
+    from movement_map import BARBELL_MOVEMENTS
+    return frozenset(i for i in used if (known.get(i) or {}).get("accessory") == "StraightBar"
+                     and i not in BARBELL_MOVEMENTS)
+
+
+# --- activity naming ---------------------------------------------------------
+
+_program_cache: dict = {}
+
+
+def activity_name(id_token: str, tonal: dict):
+    """Name the activity the way the Tonal app shows it.
+
+    Program workouts become "<program name> - Workout <n>" (e.g. "Modern Muscle -
+    Workout 20"); anything else uses the workout template's title. Returns None if
+    nothing is available, so the caller keeps the original Garmin name.
+    """
+    template = get_workout_template(id_token, tonal["workoutId"]) or {}
+    title = template.get("title")
+    program_id = tonal.get("programId")
+    if program_id:
+        if program_id not in _program_cache:
+            r = requests.get(f"{API_BASE}/v6/programs/{program_id}",
+                             headers={"Authorization": f"Bearer {id_token}"}, timeout=30)
+            _program_cache[program_id] = r.json() if r.status_code == 200 else {}
+        program = _program_cache[program_id]
+        number = next((w.get("workoutNumber") for w in program.get("programWorkouts") or []
+                       if w.get("workoutId") == tonal["workoutId"]), None)
+        if number is None and title:  # titles end like "... - WO20 (W4D5)"
+            m = re.search(r"\bWO(\d+)\b", title)
+            number = int(m[1]) if m else None
+        if program.get("name") and number is not None:
+            return f"{program['name']} - Workout {number}"
+    return title
 
 
 # --- main --------------------------------------------------------------------
@@ -228,6 +303,7 @@ def main() -> int:
         log("All recent Tonal workouts were already processed.")
         return 0
     oldest_begin = min(_gmt(w["beginTime"]) for w in todo)
+    extra_barbell = check_movements(id_token, todo)
 
     failures = 0
     for act in itertools.chain([first], garmin_acts):
@@ -253,13 +329,17 @@ def main() -> int:
             tonal_json.write_text(json.dumps(tonal))
             combined = OUTPUT_DIR / f"{activity_id}_ACTIVITY_COMBINED.fit"
             try:
-                matched = merge_tonal_and_garmin(str(tonal_json), str(original), str(combined))
+                matched = merge_tonal_and_garmin(str(tonal_json), str(original), str(combined), extra_barbell)
             except Exception as e:
                 log(f"Merge error with Tonal workout {tonal['id']}: {e}")
                 matched = False
             if not matched:
                 continue
             log(f"Matched Tonal workout {tonal['id']} ({tonal.get('beginTime')}).")
+            try:
+                tonal["_title"] = activity_name(id_token, tonal)
+            except Exception as e:
+                log(f"Could not look up the Tonal workout name (not critical): {e}")
             try:
                 process_match(client, act, tonal, tonal_json, original, combined, dry_run, state)
             except Exception as e:

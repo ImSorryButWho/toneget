@@ -20,7 +20,7 @@ from movement_map import MOVEMENT_MAP, BARBELL_MOVEMENTS
 # Tonal's explicit 'Rest' movement. Rest is represented by gaps between sets instead.
 TONAL_REST_ID = "00000000-0000-0000-0000-000000000005"
 
-def merge_tonal_and_garmin(tonal_json_path, garmin_fit_path, output_fit_path):
+def merge_tonal_and_garmin(tonal_json_path, garmin_fit_path, output_fit_path, extra_barbell_ids=frozenset()):
     # --- 1. Load Tonal Metadata ---
     with open(tonal_json_path, 'r') as f:
         tonal_data = json.load(f)
@@ -159,7 +159,7 @@ def merge_tonal_and_garmin(tonal_json_path, garmin_fit_path, output_fit_path):
             # a bilateral move, so infer the cable count from that.
             avg_weight = float(block.get('avgWeight') or 0)
             weight_lbs = float(block.get('baseWeight') or avg_weight)
-            if movement_id in BARBELL_MOVEMENTS and rep_count > 0 and avg_weight > 0:
+            if (movement_id in BARBELL_MOVEMENTS or movement_id in extra_barbell_ids) and rep_count > 0 and avg_weight > 0:
                 cables = round(float(block.get('volume', 0)) / (rep_count * avg_weight))
                 weight_lbs *= min(2, max(1, cables))
 
