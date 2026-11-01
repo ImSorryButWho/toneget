@@ -34,7 +34,7 @@ import sys
 import os
 from datetime import datetime
 from getpass import getpass
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 __version__ = "3.1.0"
 
@@ -177,11 +177,13 @@ def get_user_profile(id_token: str, user_id: str) -> dict:
     return response.json()
 
 
-def download_workouts(id_token: str, user_id: str) -> List[Dict[Any, Any]]:
+def download_workouts(id_token: str, user_id: str, latest: Optional[int] = None) -> List[Dict[Any, Any]]:
     """
-    Download all workout activities using header-based pagination.
+    Download workout activities using header-based pagination.
     
     Tonal's API uses custom headers (pg-offset, pg-limit, pg-total) for pagination.
+    The API returns workouts oldest-first, so when `latest` is given we read
+    pg-total and start at offset total - latest to get only the newest ones.
     """
     all_workouts = []
     offset = 0
@@ -193,7 +195,7 @@ def download_workouts(id_token: str, user_id: str) -> List[Dict[Any, Any]]:
     headers = {
         "Authorization": f"Bearer {id_token}",
         "pg-offset": "0",
-        "pg-limit": str(limit)
+        "pg-limit": "1" if latest else str(limit)
     }
     
     response = requests.get(base_url, headers=headers, timeout=30)
@@ -207,8 +209,14 @@ def download_workouts(id_token: str, user_id: str) -> List[Dict[Any, Any]]:
         print("📭 No workouts found.")
         return []
     
-    print(f"\n📊 Found {total} workouts to download")
+    if latest:
+        offset = max(0, total - latest)
+        print(f"\n📊 Found {total} workouts; downloading the latest {total - offset}")
+    else:
+        print(f"\n📊 Found {total} workouts to download")
     print("-" * 40)
+    start = offset
+    count = total - start
     
     while offset < total:
         headers = {
@@ -228,12 +236,12 @@ def download_workouts(id_token: str, user_id: str) -> List[Dict[Any, Any]]:
         all_workouts.extend(batch)
         
         # Progress indicator
-        downloaded = min(offset + limit, total)
-        pct = (downloaded / total) * 100
+        downloaded = min(offset + limit, total) - start
+        pct = (downloaded / count) * 100
         bar_len = 20
-        filled = int(bar_len * downloaded / total)
+        filled = int(bar_len * downloaded / count)
         bar = "█" * filled + "░" * (bar_len - filled)
-        print(f"\r   [{bar}] {downloaded}/{total} ({pct:.0f}%)", end="", flush=True)
+        print(f"\r   [{bar}] {downloaded}/{count} ({pct:.0f}%)", end="", flush=True)
         
         offset += limit
     
@@ -542,6 +550,16 @@ def main():
     # Parse command line args
     use_full = '--full' in sys.argv
     skip_gzip = '--no-gzip' in sys.argv or '--json-only' in sys.argv
+    latest = None
+    if '--latest' in sys.argv:
+        # --latest [N]: only the newest N workouts (default 1)
+        latest = 1
+        i = sys.argv.index('--latest')
+        if i + 1 < len(sys.argv) and sys.argv[i + 1].isdigit():
+            latest = int(sys.argv[i + 1])
+        if latest < 1:
+            print("❌ --latest must be at least 1")
+            sys.exit(1)
     
     print("=" * 50)
     print(f"🏋️  TONEGET v{__version__}")
@@ -583,7 +601,7 @@ def main():
             print(f"   Total workouts on record: {profile.get('totalWorkouts')}")
         
         # Download workouts
-        workouts = download_workouts(id_token, user_id)
+        workouts = download_workouts(id_token, user_id, latest)
         
         if not workouts:
             print("\n❌ No workouts to export")
@@ -596,8 +614,11 @@ def main():
         custom_workouts = build_custom_workouts(workouts, workout_catalog)
         
         # Fetch strength scores
-        strength_history = get_strength_score_history(id_token, user_id)
-        current_strength = get_current_strength_scores(id_token, user_id)
+        if latest:
+            strength_history, current_strength = [], {}
+        else:
+            strength_history = get_strength_score_history(id_token, user_id)
+            current_strength = get_current_strength_scores(id_token, user_id)
         
         # Sort by date (newest first)
         workouts.sort(key=lambda x: x.get('beginTime', ''), reverse=True)
