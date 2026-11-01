@@ -84,3 +84,13 @@ build/
 *.AppImage
 *.deb
 *.rpm
+
+# -----------------------------------------------------------------------------
+# Garmin/Tonal conversion scratch files and runtime data
+# -----------------------------------------------------------------------------
+data/
+*.fit
+*:Zone.Identifier
+workout.json
+workout[0-9].json
+tonal_workout.*

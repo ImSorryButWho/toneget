@@ -36,6 +36,8 @@ python3 sync_workouts.py
 python sync_workouts.py              # Standard export (trimmed, compressed)
 python sync_workouts.py --full       # Include all raw API fields
 python sync_workouts.py --no-gzip    # Skip compression (JSON only)
+python sync_workouts.py --latest      # Only the newest workout (skips strength scores)
+python sync_workouts.py --latest 5    # Only the newest 5 workouts
 ```
 
 ## Usage
@@ -166,3 +168,19 @@ MIT License - see [LICENSE](LICENSE) for details.
 ---
 
 **Remember:** This is your data. You created it. You have a right to it.
+
+## Enriching Garmin workouts (tonal_to_garmin.py)
+
+`tonal_to_garmin.py` finds recent Garmin strength activities that have no exercise
+sets, matches each to a recent Tonal workout, builds a combined FIT file, uploads it,
+and deletes the original (after backing it up to `DATA_DIR/backups`).
+
+```bash
+export TONAL_EMAIL=... TONAL_PASSWORD=... GARMIN_EMAIL=... GARMIN_PASSWORD=...
+export GARMIN_TOKEN_DIR=/data/garmin DATA_DIR=/data   # persistent locations
+python tonal_to_garmin.py --dry-run   # build files only; no upload or delete
+python tonal_to_garmin.py
+```
+
+If your Garmin account uses MFA, run `python fetch_garmin.py` once interactively with the
+same `GARMIN_TOKEN_DIR` to cache login tokens; unattended runs reuse them.
