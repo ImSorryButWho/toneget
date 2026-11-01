@@ -8,6 +8,7 @@ import io
 import os
 import sys
 import zipfile
+from datetime import datetime, timedelta, timezone
 from getpass import getpass
 from pathlib import Path
 
@@ -58,19 +59,28 @@ def is_enriched(client: Garmin, activity_id) -> bool:
     return any(s.get("repetitionCount") for s in sets)
 
 
-def unenriched_strength_activities(client: Garmin, scan: int = 30, known_enriched: set = None):
+def unenriched_strength_activities(client: Garmin, scan: int = 30, known_enriched: set = None,
+                                   max_age_hours: float = None, skip: set = None):
     """Yield recent strength activities (newest first) that have no exercise sets yet.
 
     Activities never become un-enriched, so IDs found to be enriched are added to
     `known_enriched` (if given) and skipped without an API call on later calls.
+    Activities in `skip` are passed over, and with `max_age_hours` the scan stops at the
+    first activity older than that (the list is newest first).
     """
     known = known_enriched if known_enriched is not None else set()
+    skip = skip or ()
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=max_age_hours) if max_age_hours else None
     # strength_training is a sub-type on Garmin's side, which the server rejects
     # as an activityType filter, so filter the recent activities ourselves.
     for act in client.get_activities(0, scan):
+        if cutoff and act.get("startTimeGMT"):
+            start = datetime.fromisoformat(act["startTimeGMT"].replace("Z", "+00:00").replace(" ", "T"))
+            if (start if start.tzinfo else start.replace(tzinfo=timezone.utc)) < cutoff:
+                break
         if act.get("activityType", {}).get("typeKey") != "strength_training":
             continue
-        if act["activityId"] in known:
+        if act["activityId"] in known or act["activityId"] in skip:
             continue
         if is_enriched(client, act["activityId"]):
             known.add(act["activityId"])

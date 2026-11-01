@@ -36,7 +36,7 @@ Garmin asks for a code at login, which an unattended add-on can't type. Either:
 
 Everything lives in the add-on's `/data` folder: `backups/` (original Garmin FIT files
 and the matching Tonal JSON; keep these as long as you like), `combined/` (generated
-files), `garmin/` (login tokens), `state.json`, and `movements_cache.json`.
+files), `garmin/` (login tokens), `state.json`, `tonal_tokens.json` (Tonal login tokens; delete to force a fresh password login), and `movements_cache.json`.
 
 ## If something goes wrong
 

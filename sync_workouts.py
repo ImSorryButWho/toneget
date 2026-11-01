@@ -29,8 +29,11 @@ Use at your own risk. See LICENSE for details.
 
 import requests
 import json
+import base64
 import gzip
 import sys
+import time
+from pathlib import Path
 import os
 from datetime import datetime
 from getpass import getpass
@@ -149,6 +152,71 @@ def authenticate(email: str, password: str) -> dict:
     
     print("✅ Authentication successful!")
     return response.json()
+
+
+def _jwt_exp(token: str) -> float:
+    """Expiry (epoch seconds) from a JWT's payload, or 0 if unreadable. Not verified; only used for caching."""
+    try:
+        payload = token.split(".")[1]
+        payload += "=" * (-len(payload) % 4)
+        return float(json.loads(base64.urlsafe_b64decode(payload))["exp"])
+    except Exception:
+        return 0.0
+
+
+def _load_token_cache(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_token_cache(path: Path, tokens: dict) -> None:
+    """Atomically write the cache (0600): a crash mid-write must not lose a rotated refresh token."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_name(path.name + ".tmp")
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w") as f:
+        json.dump({k: tokens[k] for k in ("id_token", "refresh_token") if tokens.get(k)}, f)
+    os.replace(tmp, path)
+
+
+def refresh_tokens(refresh_token: str) -> Optional[dict]:
+    """Exchange a refresh token for new tokens. Returns None if Tonal rejects it (caller falls back to
+    a password login). Network errors and unexpected statuses raise, so an outage doesn't trigger logins."""
+    try:
+        response = requests.post(
+            f"https://{AUTH0_DOMAIN}/oauth/token",
+            json={"grant_type": "refresh_token", "client_id": CLIENT_ID, "refresh_token": refresh_token},
+            timeout=30,
+        )
+    except requests.exceptions.RequestException as e:
+        raise ConnectionError(f"Failed to connect to Tonal: {e}")
+    if response.status_code in (400, 401, 403):  # invalid_grant, unauthorized_client, ...
+        return None
+    if response.status_code != 200:
+        raise Exception(f"Token refresh failed: {response.status_code} - {response.text}")
+    return response.json()
+
+
+def get_tokens(email: str, password: str, cache_path: Optional[Path] = None) -> dict:
+    """Return Tonal tokens ({"id_token": ..., ...}), logging in with the password as rarely as possible.
+
+    Order: cached id_token while still valid -> refresh_token grant -> full password login.
+    With rotating refresh tokens, whatever Tonal returns replaces the cache.
+    """
+    cache = _load_token_cache(cache_path) if cache_path else {}
+    if cache.get("id_token") and _jwt_exp(cache["id_token"]) > time.time() + 60:
+        return cache
+    tokens = refresh_tokens(cache["refresh_token"]) if cache.get("refresh_token") else None
+    if tokens and tokens.get("id_token"):
+        # Providers without rotation omit refresh_token from the response: keep the old one.
+        tokens.setdefault("refresh_token", cache["refresh_token"])
+    else:
+        tokens = authenticate(email, password)
+    if cache_path:
+        _save_token_cache(cache_path, tokens)
+    return tokens
 
 
 def get_user_info(id_token: str) -> dict:

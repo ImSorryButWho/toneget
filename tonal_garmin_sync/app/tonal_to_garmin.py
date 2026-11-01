@@ -14,6 +14,9 @@ Configuration comes from environment variables so this can run unattended
   DATA_DIR                        Backups, outputs and state (default ./data)
   TONAL_LOOKBACK                  How many recent Tonal workouts to consider (default 5)
   GARMIN_SCAN                     How many recent Garmin activities to scan (default 30)
+  GARMIN_MAX_AGE_HOURS            Ignore Garmin activities older than this (default 48)
+  UNMATCHED_GRACE_MINUTES         How long after a Garmin activity to keep looking for its Tonal
+                                  workout before giving up on it (default 120)
   UPLOAD_WAIT                     Seconds to wait for Garmin to process an upload (default 120)
 
 Usage: python tonal_to_garmin.py [--dry-run]
@@ -30,7 +33,7 @@ import os
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fit_tool.fit_file import FitFile
@@ -41,7 +44,7 @@ import fetch_garmin
 import requests
 
 from movement_map import MOVEMENT_MAP
-from sync_workouts import API_BASE, authenticate, download_workouts, get_user_info, get_workout_template
+from sync_workouts import API_BASE, download_workouts, get_tokens, get_user_info, get_workout_template
 from tonal2fit import merge_tonal_and_garmin, TONAL_REST_ID
 from update_movements import trim
 
@@ -49,6 +52,7 @@ DATA_DIR = Path(os.environ.get("DATA_DIR", "data"))
 BACKUP_DIR = DATA_DIR / "backups"
 OUTPUT_DIR = DATA_DIR / "combined"
 STATE_FILE = DATA_DIR / "state.json"
+TONAL_TOKEN_FILE = DATA_DIR / "tonal_tokens.json"
 CATALOG_CACHE = DATA_DIR / "movements_cache.json"
 CATALOG_SNAPSHOT = Path(__file__).parent / "tonal_movements.json"
 
@@ -76,6 +80,20 @@ def save_state(state: dict) -> None:
     tmp = STATE_FILE.with_suffix(".tmp")
     tmp.write_text(json.dumps(state, indent=2))
     tmp.replace(STATE_FILE)
+
+
+def note_unmatched(state: dict, act: dict) -> None:
+    """Remember a Garmin activity that has no Tonal counterpart, so later runs skip it (and never log in
+    to Tonal just to rediscover that). Only once the grace period has passed: Tonal's cloud can lag the watch."""
+    if not act.get("startTimeGMT"):
+        return
+    grace = timedelta(minutes=int(os.environ.get("UNMATCHED_GRACE_MINUTES", 120)))
+    if datetime.now(timezone.utc) - _gmt(act["startTimeGMT"]) < grace:
+        return
+    ids = state.setdefault("unmatched", [])
+    if act["activityId"] not in ids:
+        ids.append(act["activityId"])
+    del ids[:-200]
 
 
 # --- helpers -----------------------------------------------------------------
@@ -299,14 +317,16 @@ def _run(dry_run: bool, state: dict, enriched: set) -> int:
     client = fetch_garmin.login()
     dry_done = set(state.get("dry_run_done", [])) if dry_run else set()
     garmin_acts = (a for a in fetch_garmin.unenriched_strength_activities(  # lazy, newest first
-        client, int(os.environ.get("GARMIN_SCAN", 30)), known_enriched=enriched)
+        client, int(os.environ.get("GARMIN_SCAN", 30)), known_enriched=enriched,
+        max_age_hours=float(os.environ.get("GARMIN_MAX_AGE_HOURS", 48)),
+        skip=set(state.get("unmatched", [])))
         if a["activityId"] not in dry_done)
     first = next(garmin_acts, None)
     if first is None:
         log("No unenriched Garmin strength activities. Nothing to do.")
         return 0
 
-    tokens = authenticate(require_env("TONAL_EMAIL"), require_env("TONAL_PASSWORD"))
+    tokens = get_tokens(require_env("TONAL_EMAIL"), require_env("TONAL_PASSWORD"), TONAL_TOKEN_FILE)
     id_token = tokens["id_token"]
     user_id = get_user_info(id_token)["id"]
     workouts = download_workouts(id_token, user_id, int(os.environ.get("TONAL_LOOKBACK", 5)))
@@ -314,6 +334,8 @@ def _run(dry_run: bool, state: dict, enriched: set) -> int:
     todo = [w for w in workouts if w["id"] not in state["processed"]]
     if not todo:
         log("All recent Tonal workouts were already processed.")
+        for act in itertools.chain([first], garmin_acts):  # none of these can match anything
+            note_unmatched(state, act)
         return 0
     oldest_begin = min(_gmt(w["beginTime"]) for w in todo)
     extra_barbell = check_movements(id_token, todo)
@@ -322,14 +344,19 @@ def _run(dry_run: bool, state: dict, enriched: set) -> int:
     for act in itertools.chain([first], garmin_acts):
         if not todo:
             log("All Tonal workouts handled; done.")
+            for old in itertools.chain([act], garmin_acts):  # nothing left to match them with
+                note_unmatched(state, old)
             break
         activity_id = act["activityId"]
         if act.get("startTimeGMT") and (_gmt(act["startTimeGMT"]) - oldest_begin).total_seconds() < -3600:
             log("Remaining Garmin activities are older than the Tonal workouts; done.")
+            for old in itertools.chain([act], garmin_acts):
+                note_unmatched(state, old)
             break
         matches = [t for t in todo if could_match(act, t)]
         if not matches:
             log(f"Garmin activity {activity_id} ({act.get('startTimeLocal')}): no Tonal workout overlaps it; skipping.")
+            note_unmatched(state, act)
             continue
 
         log(f"Garmin activity {activity_id} ({act.get('startTimeLocal')}): checking {len(matches)} Tonal workout(s).")
@@ -364,6 +391,7 @@ def _run(dry_run: bool, state: dict, enriched: set) -> int:
             log(f"No matching Tonal workout for {activity_id}; leaving it alone.")
             (BACKUP_DIR / f"{activity_id}_tonal.json").unlink(missing_ok=True)
             original.unlink(missing_ok=True)  # nothing was changed, no backup needed
+            note_unmatched(state, act)
 
     return 1 if failures else 0
 
