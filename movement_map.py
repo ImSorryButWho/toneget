@@ -16,7 +16,7 @@ MOVEMENT_MAP = {
     "8edc0211-4594-4e5e-8e1b-b05dfc1d67c7": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.DUMBBELL_BENCH_PRESS }, # BenchPress
     "3b3f0628-37ce-4985-ab71-8ae10141ed98": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.CLOSE_GRIP_BARBELL_BENCH_PRESS }, # CloseGripBarbellBenchPress
     "8e82d264-dc5b-4ff1-8548-5a75142cb442": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # InlineChestPress
-    "656d4ed1-df6b-48bf-9c6d-9e5a40ffb269": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # SingleArmBenchPress
+    "656d4ed1-df6b-48bf-9c6d-9e5a40ffb269": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_DUMBBELL_BENCH_PRESS }, # SingleArmBenchPress
     "327a3b0b-f58f-4eb2-a552-ac31acf27a2d": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # SingleLegStandingChestPress
     "ce9f5bf6-df1f-430b-a69e-89b455664b53": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # StandingChestPress
     "fed3841a-f6a4-4bb0-a8b6-ee3bdd69edc6": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.DECLINE_DUMBBELL_BENCH_PRESS }, # StandingDeclineChestPress
@@ -28,6 +28,7 @@ MOVEMENT_MAP = {
     # ==========================================
     "84df58e8-4b42-46ee-abb3-c953d1148fda": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SQUAT }, # AssistedSquat
     "f2f15034-7c0f-4a9d-8f21-24ca3abadd93": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.BARBELL_FRONT_SQUAT }, # BarbellFrontSquat
+    "105426d1-d502-4a20-9406-a9374662c3f0": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.BARBELL_BACK_SQUAT }, # BarbellBackSquat (name inferred from the "Back Squat Basics" workout; not in the app's Known list)
     "16323ff6-8dab-4f03-afec-0488986d1784": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.THRUSTERS }, # BarbellSquattoPress
     "99a561e8-ecf0-423f-848d-7116e8bb1189": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_SPLIT_SQUAT }, # BodyweightSplitSquat
     "02ba615d-2fa1-4216-81ee-127b9b58644c": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.AIR_SQUAT }, # BodyweightSquat
@@ -40,9 +41,9 @@ MOVEMENT_MAP = {
     "ae08e77e-ab5e-4b17-aeba-20e8ed12d9f5": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SQUAT }, # LowSquatWalkOut
     "9b9c5754-bbfe-4ae4-b531-e4adc6fa4fec": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SUMO_SQUAT }, # MiniSumoSquat
     "d4634ec3-7a7f-49b2-b2a5-e965aaa67744": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_SPLIT_SQUAT }, # RackedOffsetSplitSquatw_Rotation
-    "03157c8a-2c1b-41cb-a8c3-7169033bb094": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SQUAT }, # RackedOffsetSquat
-    "7d6175b3-1351-4dad-830e-632ab3e6ecb6": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SQUAT }, # RackedSquat
-    "cc0aaa36-dd08-4be3-852e-cf6365f840ce": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SQUAT }, # RackedSquattoBench
+    "03157c8a-2c1b-41cb-a8c3-7169033bb094": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_FRONT_SQUAT }, # RackedOffsetSquat
+    "7d6175b3-1351-4dad-830e-632ab3e6ecb6": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_FRONT_SQUAT }, # RackedSquat
+    "cc0aaa36-dd08-4be3-852e-cf6365f840ce": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_FRONT_SQUAT }, # RackedSquattoBench
     "4b4e3a95-d62a-40b5-873c-1287432c1824": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.STEP_UP }, # ResistedStepUp
     "c7737825-dd6f-44b4-9b25-6ee66b43d07d": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_SPLIT_SQUAT }, # SplitSquat
     "ceda4364-ca24-491c-8138-70d9a330747d": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.THRUSTERS }, # SquattoPress
@@ -61,7 +62,7 @@ MOVEMENT_MAP = {
     "0b8f03ae-b64a-45c5-8443-dd955637777f": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.LUNGE }, # BodyweightAlternatingReverseLunge
     "8c86cb06-c6bc-4566-a99a-16baf7215789": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.CURTSY_LUNGE }, # GobletCurtseyLunge
     "8905f979-603d-4ed3-890b-d245c5cf9ba4": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.DUMBBELL_REVERSE_LUNGE }, # GobletReverseLunge
-    "d1e3eb78-ebf3-4725-9676-f3a61535fa41": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.SIFF_JUMP_LUNGE }, # JumpLunge
+    "d1e3eb78-ebf3-4725-9676-f3a61535fa41": { "category": ExerciseCategory.PLYO, "subtype": PlyoExerciseName.ALTERNATING_JUMP_LUNGE }, # JumpLunge
     "a4718680-b481-46bc-9309-6101a342d9bc": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.SIDE_LUNGE }, # LateralLunge
     "7e9109b1-47cc-44ce-ad5f-957c52eea105": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.DUMBBELL_REVERSE_LUNGE }, # RackedReverseLunge
     "d0211436-8cfe-43b7-841e-638f67ec2b60": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.LUNGE }, # ResistedAlternatingLunge
@@ -78,7 +79,7 @@ MOVEMENT_MAP = {
     # ==========================================
     "c4f3f895-61c4-4916-9e11-6f3ec68e8dba": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.BARBELL_DEADLIFT }, # BarbellDeadlift
     "ef5f1802-a99e-4e56-b473-32bbf353fb73": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.ROMANIAN_DEADLIFT }, # BarbellRDL
-    "2815c323-5b94-47f2-b946-3b10af26d02b": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SINGLE_LEG_ROMANIAN_DEADLIFT_WITH_DUMBBELL }, # BarbellSingleLegRDL
+    "2815c323-5b94-47f2-b946-3b10af26d02b": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SINGLE_LEG_BARBELL_STRAIGHT_LEG_DEADLIFT }, # BarbellSingleLegRDL
     "7f71d0b7-43ba-4f06-b47c-3527a6421432": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SUMO_DEADLIFT }, # BarbellSumoDeadlift
     "391cc5b7-5074-4e88-b9d9-098231476a15": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SINGLE_LEG_ROMANIAN_DEADLIFT_WITH_DUMBBELL }, # BodyweightSingleLegRDL
     "a9756142-cce9-4720-ba97-2a84a1cf865b": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.DUMBBELL_DEADLIFT }, # NeutralGripDeadlift
@@ -147,7 +148,7 @@ MOVEMENT_MAP = {
     "0b5e580d-f813-4f4e-81ae-2ed559f88a93": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.BARBELL_BICEPS_CURL }, # BarbellBicepCurl
     "dffe549f-179e-4cae-b43e-9a4af6cb1bc7": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.DUMBBELL_BICEPS_CURL }, # BicepCurl
     "2cb2b3f2-ff44-49f6-9938-915295db1e82": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.DUMBBELL_HAMMER_CURL }, # HammerCurl
-    "af1785f9-cd7b-4725-ba56-3ea4eae038c2": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.CABLE_BICEPS_CURL }, # LyingBicepCurl
+    "af1785f9-cd7b-4725-ba56-3ea4eae038c2": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.LYING_CONCENTRATION_CABLE_CURL }, # LyingBicepCurl
     "6b526e88-90a3-4724-931c-f667e2add45c": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.CABLE_BICEPS_CURL }, # LyingFaceCurl
     "bbf70900-fc6f-4057-86fb-34e0dd0f328f": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.REVERSE_GRIP_BARBELL_BICEPS_CURL }, # ReverseGripBarbellBicepCurl
     "4172950f-6e31-4f42-be04-45f2ca641d21": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.REVERSE_GRIP_BARBELL_BICEPS_CURL }, # ReverseGripBicepCurl
@@ -158,12 +159,12 @@ MOVEMENT_MAP = {
     # TRICEPS EXTENSION
     # ==========================================
     "7e40f53a-78a5-4620-b903-4bc81d05cbe2": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.LYING_EZ_BAR_TRICEPS_EXTENSION }, # BarbellSkullCrusher
-    "9b0b0dad-6f86-4832-9dee-e6eaf4fad8b9": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.OVERHEAD_DUMBBELL_TRICEPS_EXTENSION }, # OverheadTricepExtension
+    "9b0b0dad-6f86-4832-9dee-e6eaf4fad8b9": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.CABLE_OVERHEAD_TRICEPS_EXTENSION }, # OverheadTricepExtension
     "3ab05f57-b729-4abe-a15e-00a1680f2547": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.REVERSE_GRIP_PRESSDOWN }, # ReverseGripBarbellTricepExtension
     "0e17b36b-37b4-4c6f-accb-979dfaaf30d2": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.REVERSE_GRIP_PRESSDOWN }, # ReverseGripTricepExtension
     "3671753e-8f7a-43b9-b20c-fce4a0991a0a": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.CABLE_KICKBACK }, # SingleArmTricepExtension
     "52f1a3a8-6a76-46b7-ba3b-d5ceba0ddbc9": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.DUMBBELL_LYING_TRICEPS_EXTENSION }, # SkullCrusher
-    "8571813d-b302-4cbe-a3b5-cc805a046b7d": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.TRICEPS_EXTENSION_ON_FLOOR }, # TricepExtension
+    "8571813d-b302-4cbe-a3b5-cc805a046b7d": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.ROPE_PRESSDOWN }, # TricepExtension
     "2f5a1f17-32cd-4fb6-9213-46a19a889837": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.CABLE_KICKBACK }, # TricepKickback
 
     # ==========================================
@@ -287,7 +288,7 @@ MOVEMENT_MAP = {
     # ==========================================
     # SHRUG
     # ==========================================
-    "772c57de-5c39-4e9d-8e09-32326437433f": { "category": ExerciseCategory.SHRUG, "subtype": ShrugExerciseName.BARBELL_SHRUG }, # ShoulderShrug
+    "772c57de-5c39-4e9d-8e09-32326437433f": { "category": ExerciseCategory.SHRUG, "subtype": ShrugExerciseName.DUMBBELL_SHRUG }, # ShoulderShrug
 
     # ==========================================
     # HIP / SHOULDER STABILITY
@@ -342,40 +343,159 @@ MOVEMENT_MAP = {
     # UNKNOWN / UNMAPPED
     # ==========================================
     "00000000-0000-0000-0000-000000000005": { "category": ExerciseCategory.UNKNOWN, "subtype": 0 }, # Rest
-    "db8e5581-d56e-4925-bfb2-f47e3b692f4d": { "category": ExerciseCategory.UNKNOWN, "subtype": 0 }, # LateralWalkOut
+    "db8e5581-d56e-4925-bfb2-f47e3b692f4d": { "category": ExerciseCategory.WARM_UP, "subtype": WarmUpExerciseName.WALKOUT }, # LateralWalkOut
     "70bc255e-0662-44bc-b632-dd093f7ae7a9": { "category": ExerciseCategory.UNKNOWN, "subtype": 0 }, # SingleArmRotationalPunch
     "1ade96ac-867d-4c84-a5ac-ce6b674989ad": { "category": ExerciseCategory.RUN, "subtype": RunExerciseName.JOG }, # ButtKicker
+
+    # ==========================================
+    # ADDED FROM TONAL'S /v6/movements CATALOG (names are Tonal's display names)
+    # ==========================================
+    "7a2e463e-7e18-467f-af42-229cdf8a7bae": { "category": ExerciseCategory.PLYO, "subtype": PlyoExerciseName.JUMP_SQUAT }, # 180JumpSquat
+    "e01fde3a-e891-4b43-9e18-fb6814e3574f": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.CABLE_WOODCHOP }, # AeroChop
+    "0531164c-d2bf-48cf-8b3f-b5d88aec24ee": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.ALTERNATING_DUMBBELL_LUNGE }, # AeroLunge
+    "1fe8ace5-7c0d-4344-aaeb-259f7bb7d56f": { "category": ExerciseCategory.ROW, "subtype": RowExerciseName.FACE_PULL }, # AeroMiniPull
+    "503ae95b-6a41-46aa-92cd-22fb503b86ed": { "category": ExerciseCategory.PULL_UP, "subtype": PullUpExerciseName.LAT_PULLDOWN }, # AeroPull
+    "aeeefc4d-2a9a-429a-8a7b-29310fc4f842": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.CABLE_WOODCHOP }, # AeroTwist
+    "8bd8f6a8-f90b-4303-8e49-56a16361dc04": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.GOBLET_SQUAT }, # AlternatingGobletLateralSquat
+    "e4263a8a-8246-4f18-9791-ad1bbea8b409": { "category": ExerciseCategory.PUSH_UP, "subtype": PushUpExerciseName.ALTERNATING_STAGGERED_PUSH_UP }, # AlternatingStaggeredPushup
+    "98ea9091-3b11-45ad-9b4a-1f4ebdc8f61c": { "category": ExerciseCategory.CALF_RAISE, "subtype": CalfRaiseExerciseName.STANDING_BARBELL_CALF_RAISE }, # BarbellCalfRaise
+    "79dd2d83-9c5b-4d2b-ae88-aeb53c505e7e": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.CABLE_BICEPS_CURL }, # BarbellLyingFaceCurl
+    "5d601057-b7f7-4084-a4d1-77c3c6f87508": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.SUMO_SQUAT_TO_HIGH_PULL }, # BarbellSumoSquattoUprightRow
+    "2a61353a-de0a-484d-9f1a-7fbe6b131b89": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.STRAIGHT_ARM_PLANK_WITH_SHOULDER_TOUCH }, # BearHoldwithShoulderTap
+    "9a4849f3-dfc6-47fc-b23a-bc9b01940943": { "category": ExerciseCategory.TOTAL_BODY, "subtype": TotalBodyExerciseName.SQUAT_PLANK_PUSH_UP }, # BeastPushup
+    "2fcae628-af70-4a9d-8048-0e4530fbf72c": { "category": ExerciseCategory.CRUNCH, "subtype": CrunchExerciseName.REVERSE_CRUNCH_ON_A_BENCH }, # BenchReverseCrunch
+    "3fc96b69-5b05-489c-938e-917f36f03453": { "category": ExerciseCategory.HYPEREXTENSION, "subtype": HyperextensionExerciseName.BENT_KNEE_REVERSE_HYPEREXTENSION }, # BenchReverseHyper
+    "6eac83a8-db66-4862-b617-6577348add68": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.KNEELING_SIDE_PLANK_WITH_LEG_LIFT }, # BentKneeCopenhagenPlank
+    "deb5d7e5-c3db-4262-94e9-d0e578ee0883": { "category": ExerciseCategory.SHOULDER_STABILITY, "subtype": ShoulderStabilityExerciseName.FLOOR_Y_RAISE }, # BentOverIYTRaise
+    "d313ccd4-ad81-415c-8ce9-362f5e6696f3": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.QUADRUPED }, # BirdDog
+    "b018bcad-d146-47e5-9abd-bd7db9cf740a": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.CURTSY_LUNGE }, # BodyweightAlternatingCurtseyLunge
+    "3d7d0683-aaad-4222-a738-a9ea3dbbd27b": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.SIDE_LUNGE }, # BodyweightAlternatingLateralLunge
+    "7d6bebf9-d5c7-4d13-bd84-7ad9ae1b031f": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.AIR_SQUAT }, # BodyweightAlternatingLateralSquat
+    "abfc3493-13e0-4a43-92cb-db5411c56910": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.STEP_UP }, # BodyweightAlternatingStepUp
+    "0b0e6bc1-1bc0-4b76-800f-b1afd3f1b2e1": { "category": ExerciseCategory.LEG_CURL, "subtype": LegCurlExerciseName.GOOD_MORNING }, # BodyweightGoodMorning
+    "62c9f2a2-4cee-450d-9a81-f1cbed3bd91d": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.AIR_SQUAT }, # BodyweightSquattoBench
+    "ed6c90eb-1f46-4860-b424-4934bc183526": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.AIR_SQUAT }, # BodyweightSquattoBenchwithCalfRaise
+    "e0082382-1b10-48cd-9393-e57fa9b98e6c": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.AIR_SQUAT }, # BodyweightSquattoCalfRaise
+    "aac693a2-89d1-4801-b60e-740643c5684b": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.ABDOMINAL_LEG_ROTATIONS }, # Coordination
+    "91eb94ea-5efb-4718-aba5-8909925a9e68": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.SIDE_PLANK_WITH_FEET_ON_BENCH }, # CopenhagenPlank
+    "18210c83-573b-4c7a-b015-5caee6e4b5b1": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.DEAD_BUG }, # DNSStar
+    "e5bead9c-b3fb-49df-aadd-22f85c4b7ceb": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.QUADRUPED_HIP_EXTENSION }, # DonkeyKick
+    "64ad4a40-42ed-4a6c-9b01-c100c8fc6807": { "category": ExerciseCategory.LATERAL_RAISE, "subtype": LateralRaiseExerciseName.CABLE_DIAGONAL_RAISE }, # DrawaSword
+    "e905dcff-a3fc-42eb-9ef6-ea46e91f9948": { "category": ExerciseCategory.CRUNCH, "subtype": CrunchExerciseName.FROG_PRESS }, # FeetinStrapsFrogPress
+    "fac61c5b-81e5-4202-89d9-871053a488f4": { "category": ExerciseCategory.LEG_RAISE, "subtype": LegRaiseExerciseName.LEG_LOWERING_DRILL }, # FeetinStrapsLegLowers
+    "7ffe4c00-22c3-4673-8e61-5f7299d7728b": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.FIRE_HYDRANT_KICKS }, # FireHydrant
+    "f04922b7-63f2-476c-aea4-f816d85f9227": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.DUMBBELL_FLOOR_PRESS }, # FloorPress
+    "a2c09363-d4a3-46c1-a4c2-4fcfe42ef19b": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.SIDE_PLANK_WITH_FEET_ON_BENCH }, # FootElevatedLateralBridge
+    "8dd1f44f-7706-4016-8ac2-aa212c08c33a": { "category": ExerciseCategory.TOTAL_BODY, "subtype": TotalBodyExerciseName.SQUAT_THRUSTS }, # Frogger
+    "6c726f6d-80b4-4a3a-abec-49bdce48afb6": { "category": ExerciseCategory.SHOULDER_PRESS, "subtype": ShoulderPressExerciseName.SINGLE_ARM_DUMBBELL_SHOULDER_PRESS }, # HalfKneelingSingle-ArmInclinePress
+    "416cc5e4-5b86-4194-b2bb-0832c03b9c6e": { "category": ExerciseCategory.ROW, "subtype": RowExerciseName.WIDE_GRIP_SEATED_CABLE_ROW }, # HalfRollDownwithWideRow
+    "0412672f-7b5a-4367-a032-2216054736a5": { "category": ExerciseCategory.LEG_RAISE, "subtype": LegRaiseExerciseName.LEG_LOWERING_DRILL }, # HeelDrop
+    "8740b27c-1a7f-4b7b-888b-b1bc7b5ca6b1": { "category": ExerciseCategory.PLYO, "subtype": PlyoExerciseName.SIDE_TO_SIDE_SHUFFLE_JUMP }, # HeismanShuffle
+    "3415cdba-ed16-49cb-9661-83d97a2037d3": { "category": ExerciseCategory.HIP_RAISE, "subtype": HipRaiseExerciseName.HIP_RAISE }, # HipLift
+    "3f195043-dc8c-483b-974f-9f37800d7e58": { "category": ExerciseCategory.FLYE, "subtype": FlyeExerciseName.HUG_A_TREE }, # HugaTree
+    "e364c3c1-226f-476b-8783-1f63457ec389": { "category": ExerciseCategory.TOTAL_BODY, "subtype": TotalBodyExerciseName.BURPEE }, # InclineBurp
+    "217449f9-4feb-4a7d-aed9-c3f02878469c": { "category": ExerciseCategory.TOTAL_BODY, "subtype": TotalBodyExerciseName.BURPEE }, # InclineBurptoAlternatingStepUp
+    "0d2c1727-b20d-4400-866f-84a2fc90a2c3": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.MOUNTAIN_CLIMBER_WITH_HANDS_ON_BENCH }, # InclineMountainClimber
+    "e9b5af01-877f-4829-9864-5a6d083381d7": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.STRAIGHT_ARM_PLANK_WITH_SHOULDER_TOUCH }, # InclinePlankwithShoulderTap
+    "c234a1ff-547d-4c59-a375-497f3e37d0b1": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.STANDING_SPLIT_ROTATIONAL_CHOP }, # IsoSplitSquatChop
+    "b68dd564-eb27-4b76-904f-67e25cf6de8c": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.CABLE_ROTATIONAL_LIFT }, # IsoSplitSquatLift
+    "71d78981-b0a9-40a4-8235-2485e2116bf5": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.CABLE_CORE_PRESS }, # IsoSplitSquatPallofPress
+    "2916e77f-31a3-450c-9af1-ce4e26e9cdb0": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # IsoSplitSquatSingle-ArmChestPress
+    "cce9326c-8c71-4413-9690-e6348d3ff362": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SINGLE_LEG_ROMANIAN_DEADLIFT_WITH_DUMBBELL }, # KickstandRDL
+    "60ae5086-d1b3-4249-ade0-3d838aa740a7": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.SINGLE_LEG_ROMANIAN_DEADLIFT_WITH_DUMBBELL }, # KickstandSingle-ArmRDL
+    "cef3a8cd-939e-4208-b0d4-976f5bc46ffe": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.KNEELING_SIDE_PLANK_WITH_LEG_LIFT }, # KneelingLateralBridge
+    "c7947f9c-5141-4d98-b8e5-339a26e73399": { "category": ExerciseCategory.PUSH_UP, "subtype": PushUpExerciseName.KNEELING_PUSH_UP }, # KneelingPushup
+    "98cb757f-abf7-44ff-bb46-145b76eb2dd3": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.SIDE_PLANK }, # LateralBridgeHipDip
+    "b70251b4-b0d9-4ffc-94c8-49f18d925889": { "category": ExerciseCategory.PLYO, "subtype": PlyoExerciseName.LATERAL_LEAP_AND_HOP }, # LateralHopOver
+    "4adc0809-1796-403d-9f61-f6a15a397b1f": { "category": ExerciseCategory.PLYO, "subtype": PlyoExerciseName.LATERAL_LEAP_AND_HOP }, # LateralLungetoHop
+    "594ade7e-7069-4aa1-a455-5e1700c084c1": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.HIP_CIRCLES }, # LegCircles
+    "d56c962c-8580-4dc4-9870-4e374e5c67c9": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.STANDING_ROTATIONAL_CHOP }, # MiddleChop
+    "c303227d-680f-4a08-988d-3ef991674946": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.TEASER }, # ObliqueBoat
+    "608fa311-6764-4dd8-923a-1e26b4284a2c": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.CABLE_CORE_PRESS }, # PallofHold
+    "a3beb152-38a8-40ae-948e-9d07ffb5b8cd": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.PISTOL_SQUAT }, # PistolSquattoBench
+    "bb513dfe-19c8-4490-bfc8-d8e71b81b52a": { "category": ExerciseCategory.LEG_CURL, "subtype": LegCurlExerciseName.LEG_CURL }, # ProneBenchHamstringCurl
+    "f227965f-12fc-4d6a-8e80-5cf624e69e86": { "category": ExerciseCategory.CHOP, "subtype": ChopExerciseName.CABLE_PULL_THROUGH }, # PullThrough
+    "85cb4a4c-cd83-4358-9afc-5ecb436d0bca": { "category": ExerciseCategory.ROW, "subtype": RowExerciseName.SEATED_CABLE_ROW }, # PullingStrapsT-Pull
+    "39999538-669b-46a5-ba2d-63ce2f3569d4": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.TRICEPS_PRESSDOWN }, # PullingStrapsTricepsExtension
+    "3e6d0a29-787e-4dc3-bb04-3122e3967726": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.QUADRUPED_WITH_LEG_LIFT }, # QuadrupedLegLiftwithTricepsPress
+    "e655e320-10e8-4f3a-b608-3254cc6111de": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.QUADRUPED_HIP_EXTENSION }, # QuadrupedLegPresswithExternalRotation
+    "7af8d726-b6a9-42ce-adb2-8c12ff41470b": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.QUADRUPED_WITH_LEG_LIFT }, # QuadrupedLegSweep
+    "e048f170-2769-46dd-9a06-7a3bd7c1cf4c": { "category": ExerciseCategory.CARRY, "subtype": CarryExerciseName.FARMERS_WALK }, # RackedOffsetMarch
+    "1aee6199-ad48-4c44-b52e-456f4c30672d": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.SEATED_SIDE_BEND }, # ResistedMermaid
+    "563f9cd4-3840-4c03-87b1-799d86efab45": { "category": ExerciseCategory.CURL, "subtype": CurlExerciseName.CABLE_BICEPS_CURL }, # ReverseBicepsCurls
+    "47270891-b218-468c-bba6-7824d1155251": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.SINGLE_ARM_REVERSE_LUNGE_AND_PRESS }, # ReverseLungetoSingle-ArmOverheadPress
+    "60de026e-0076-4af7-8bc0-b3c2f31051a3": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.DUMBBELL_REVERSE_LUNGE }, # ReverseLungetoStepUp
+    "fed85293-b564-429c-b9be-9d52c2da5e75": { "category": ExerciseCategory.LEG_CURL, "subtype": LegCurlExerciseName.SPLIT_STANCE_EXTENSION }, # ReverseNordicCurl
+    "c291e6cf-8da1-4352-82fd-5445c0fac07c": { "category": ExerciseCategory.SIT_UP, "subtype": SitUpExerciseName.THREE_PART_ROLL_DOWN }, # RollDown
+    "0955a55f-ea8b-45ea-997e-68d524429888": { "category": ExerciseCategory.PLANK, "subtype": PlankExerciseName.ROLLING_SIDE_PLANK }, # RollingPillarBridge
+    "a27542d8-e17e-4260-a6c4-d2fc1feeb24f": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.ROLL_OVER }, # Rollover
+    "75bd7e26-7c11-40c9-aadc-d096612dcd3a": { "category": ExerciseCategory.CARDIO, "subtype": CardioExerciseName.SQUAT_JACKS }, # RotationalSquatJack
+    "1412cb4d-c8b1-4aa3-bc66-3cfe2d5f5ba7": { "category": ExerciseCategory.CRUNCH, "subtype": CrunchExerciseName.CABLE_CRUNCH }, # SeatedCableCrunch
+    "52f0a534-f53b-46bf-a65f-8c0e19b316f2": { "category": ExerciseCategory.CRUNCH, "subtype": CrunchExerciseName.KNEELING_OBLIQUE_CABLE_CRUNCH }, # SeatedObliqueCableCrunch
+    "9c5103d8-f149-4aa3-9fd1-24eec2ca2831": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.SINGLE_ARM_CABLE_CHEST_PRESS }, # ServeaTray
+    "57bb1ab4-eb47-4c8f-8512-77c3713fecbf": { "category": ExerciseCategory.LATERAL_RAISE, "subtype": LateralRaiseExerciseName.SHAVING_THE_HEAD }, # Shaving
+    "607fb69b-f9e8-4ce8-8172-a790b76f3478": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.ROLL_UP }, # ShortSpine
+    "e95446e9-d1f7-4aa3-8e36-b154fa442a9a": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.SIDE_LYING_LEG_RAISE }, # SideLyingHipAbduction
+    "be57e816-df72-4282-bbd4-7044e9284510": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.SIDE_LYING_LEG_RAISE }, # SideLyingLegPress
+    "75e288f7-5e61-400a-ab40-4f0f77dadeb9": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.SIDE_LYING_LEG_RAISE }, # SideLyingLegSweep
+    "5948f9ba-fe83-4b8c-b2d8-0e96d564ae74": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.THRUSTERS }, # Single-ArmSquattoPress
+    "77f88463-9e09-4d37-905f-db88b5c4a35b": { "category": ExerciseCategory.DEADLIFT, "subtype": DeadliftExerciseName.DUMBBELL_STRAIGHT_LEG_DEADLIFT }, # Single-HandleRDL
+    "4bcd3975-c67a-41b7-8a2a-405e1ecbd14d": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.STEP_UP }, # Single-LegBenchStepOver
+    "aa1dfc10-bb5c-4b60-b96c-66a1f3ce4460": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.HIP_CIRCLES }, # Single-LegCircles
+    "4efd8866-768f-4fb5-805b-abcde181e909": { "category": ExerciseCategory.CARDIO, "subtype": CardioExerciseName.SQUAT_JACKS }, # SquatJack
+    "94887f4e-948a-4373-8e62-b02ee99cfad5": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.THRUSTERS }, # SquattoAlternatingRotationalPress
+    "447fde5d-16c6-4b22-8c2a-394a1a828b86": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.BICYCLE }, # StandingBicycle
+    "7b635e41-d9d1-475b-b4a6-e2779fce5fb1": { "category": ExerciseCategory.HIP_STABILITY, "subtype": HipStabilityExerciseName.STANDING_REAR_LEG_RAISE }, # StandingDiagonalGluteKickback
+    "5d0936a8-2d9f-46f3-8d42-8e39a8781198": { "category": ExerciseCategory.BENCH_PRESS, "subtype": BenchPressExerciseName.INCLINE_DUMBBELL_BENCH_PRESS }, # StandingInclinePress
+    "61ff8f2b-f821-4078-a36f-67e540c8b694": { "category": ExerciseCategory.CRUNCH, "subtype": CrunchExerciseName.LEG_EXTENSIONS }, # StandingLegExtension
+    "dbf97d63-6877-42bf-96f4-2c2892f90210": { "category": ExerciseCategory.WARM_UP, "subtype": WarmUpExerciseName.SHOULDER_CIRCLES }, # StandingShoulderCARs
+    "9d746cda-fc21-4a03-97c7-1919ab393ea0": { "category": ExerciseCategory.LUNGE, "subtype": LungeExerciseName.DUMBBELL_BULGARIAN_SPLIT_SQUAT }, # SuitcaseBulgarianSplitSquat
+    "81d83867-8680-456c-8cd3-573611c08814": { "category": ExerciseCategory.SQUAT, "subtype": SquatExerciseName.DUMBBELL_SPLIT_SQUAT }, # SuitcaseSplitSquat
+    "41c9360f-11ff-4a68-8945-4a8eaaf58b5e": { "category": ExerciseCategory.PULL_UP, "subtype": PullUpExerciseName.STRAIGHT_ARM_PULLDOWN }, # SupineArmswithC-Curve
+    "3ae2ce44-f0ac-4c8d-bb91-90387bb378e6": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.TEASER }, # Teaser
+    "ceda3d37-3a60-4366-aa0d-48f7a04b1200": { "category": ExerciseCategory.CORE, "subtype": CoreExerciseName.THE_HUNDRED }, # TheHundred
+    "2da40d18-5f1c-42a8-9a21-c2677a00d300": { "category": ExerciseCategory.PUSH_UP, "subtype": PushUpExerciseName.PUSH_UP }, # TravelingPushup
+    "49a8ba31-3233-4838-8df8-a7a73fcb71c7": { "category": ExerciseCategory.TRICEPS_EXTENSION, "subtype": TricepsExtensionExerciseName.BENCH_DIP }, # TricepsBenchDip
+    "d32af3ba-1adb-4739-8ccd-25f99ca7d1b6": { "category": ExerciseCategory.PUSH_UP, "subtype": PushUpExerciseName.PUSH_UP }, # TricepsPushup
 }
 
-# Tonal movements performed on the barbell. Tonal shows the combined load of both
-# cables for these (e.g. 31 lb for a 15.5 lb/cable bar), while for everything else
-# it shows the weight per handle, and so should the Garmin file.
+# Tonal movements that use the straight bar (accessory == "StraightBar" in Tonal's
+# /v6/movements catalog; regenerate with update_movements.py). Tonal shows the
+# combined load of both cables for these (e.g. 31 lb for a 15.5 lb/cable bar), while
+# for everything else it shows the weight per handle, and so should the Garmin file.
 BARBELL_MOVEMENTS = {
-    "c9afad76-751b-4f7a-99b7-6b5dc09d3901",  # BarbellBenchPress
-    "ec9edd5f-4745-45b7-b78b-b7368839ca38",  # BarbellBentOverRow
-    "0b5e580d-f813-4f4e-81ae-2ed559f88a93",  # BarbellBicepCurl
-    "56d65783-2054-4517-aa07-03051b2224cc",  # BarbellChinup
-    "c4f3f895-61c4-4916-9e11-6f3ec68e8dba",  # BarbellDeadlift
-    "1b74ca5c-1633-42d3-a9dd-eebc3b505d75",  # BarbellFrontRackedReverseLunge
-    "380f1643-9a10-4ef5-bda3-ef7bde449c57",  # BarbellFrontRackedSplitSquat
-    "5c740fbf-6d28-4fba-912d-040e4d1c92e1",  # BarbellFrontRaise
-    "f2f15034-7c0f-4a9d-8f21-24ca3abadd93",  # BarbellFrontSquat
-    "d44826e1-f6b3-4bed-9d6f-8456d9cde3ec",  # BarbellHipThrust
-    "f80654dc-d987-4734-bf8b-b135ef30a7d3",  # BarbellLateralLegRaise
-    "b686f885-427c-4e64-9aa3-4b485c82678e",  # BarbellLyingGluteBridge
-    "9806547f-2029-4c0a-94cc-d43b7b46da6c",  # BarbellPullover
-    "ef5f1802-a99e-4e56-b473-32bbf353fb73",  # BarbellRDL
-    "04b05efe-4873-4dc1-b178-a5173e0588d9",  # BarbellSeatedLatPulldown
-    "a906fa8b-a55d-4acf-b350-c6b12f77bf40",  # BarbellSeatedOverheadPress
-    "2815c323-5b94-47f2-b946-3b10af26d02b",  # BarbellSingleLegRDL
-    "7e40f53a-78a5-4620-b903-4bc81d05cbe2",  # BarbellSkullCrusher
-    "16323ff6-8dab-4f03-afec-0488986d1784",  # BarbellSquattoPress
-    "a8468ca2-8951-4a99-a298-4eb8adb9a3b4",  # BarbellStraightArmMarch
-    "f94f667d-5fe2-4bf7-b87e-ca705d5b627d",  # BarbellStraightArmPulldown
-    "7f71d0b7-43ba-4f06-b47c-3527a6421432",  # BarbellSumoDeadlift
-    "3b3f0628-37ce-4985-ab71-8ae10141ed98",  # CloseGripBarbellBenchPress
-    "bbf70900-fc6f-4057-86fb-34e0dd0f328f",  # ReverseGripBarbellBicepCurl
-    "3ab05f57-b729-4abe-a15e-00a1680f2547",  # ReverseGripBarbellTricepExtension
-    "eabcfa09-599a-4efd-8997-de107832de01",  # StandingBarbellOverheadPress
-    "d5fd808e-e883-4109-9371-cbcc727144cf",  # WideGripBarbellBenchPress
+    "00000000-0000-0000-0000-000000000003",  # Bar Move
+    "00000000-0000-0000-0000-00000000000a",  # Bar Move
+    "00000000-0000-0000-0000-00000000000b",  # Bar Move
+    "105426d1-d502-4a20-9406-a9374662c3f0",  # Barbell Back Squat
+    "c9afad76-751b-4f7a-99b7-6b5dc09d3901",  # Barbell Bench Press
+    "ec9edd5f-4745-45b7-b78b-b7368839ca38",  # Barbell Bent Over Row
+    "0b5e580d-f813-4f4e-81ae-2ed559f88a93",  # Barbell Biceps Curl
+    "98ea9091-3b11-45ad-9b4a-1f4ebdc8f61c",  # Barbell Calf Raise
+    "56d65783-2054-4517-aa07-03051b2224cc",  # Barbell Chinup
+    "c4f3f895-61c4-4916-9e11-6f3ec68e8dba",  # Barbell Deadlift
+    "1b74ca5c-1633-42d3-a9dd-eebc3b505d75",  # Barbell Front Racked Reverse Lunge
+    "380f1643-9a10-4ef5-bda3-ef7bde449c57",  # Barbell Front Racked Split Squat
+    "5c740fbf-6d28-4fba-912d-040e4d1c92e1",  # Barbell Front Raise
+    "f2f15034-7c0f-4a9d-8f21-24ca3abadd93",  # Barbell Front Squat
+    "d44826e1-f6b3-4bed-9d6f-8456d9cde3ec",  # Barbell Hip Thrust
+    "f80654dc-d987-4734-bf8b-b135ef30a7d3",  # Barbell Lateral Leg Raise
+    "79dd2d83-9c5b-4d2b-ae88-aeb53c505e7e",  # Barbell Lying Face Curl
+    "b686f885-427c-4e64-9aa3-4b485c82678e",  # Barbell Lying Glute Bridge
+    "9806547f-2029-4c0a-94cc-d43b7b46da6c",  # Barbell Pullover
+    "ef5f1802-a99e-4e56-b473-32bbf353fb73",  # Barbell RDL
+    "04b05efe-4873-4dc1-b178-a5173e0588d9",  # Barbell Seated Lat Pulldown
+    "a906fa8b-a55d-4acf-b350-c6b12f77bf40",  # Barbell Seated Overhead Press
+    "2815c323-5b94-47f2-b946-3b10af26d02b",  # Barbell Single-Leg RDL
+    "7e40f53a-78a5-4620-b903-4bc81d05cbe2",  # Barbell Skull Crusher
+    "16323ff6-8dab-4f03-afec-0488986d1784",  # Barbell Squat to Press
+    "a8468ca2-8951-4a99-a298-4eb8adb9a3b4",  # Barbell Straight Arm March
+    "f94f667d-5fe2-4bf7-b87e-ca705d5b627d",  # Barbell Straight Arm Pulldown
+    "7f71d0b7-43ba-4f06-b47c-3527a6421432",  # Barbell Sumo Deadlift
+    "5d601057-b7f7-4084-a4d1-77c3c6f87508",  # Barbell Sumo Squat to Upright Row
+    "3b3f0628-37ce-4985-ab71-8ae10141ed98",  # Close Grip Barbell Bench Press
+    "bbf70900-fc6f-4057-86fb-34e0dd0f328f",  # Reverse Grip Barbell Biceps Curl
+    "3ab05f57-b729-4abe-a15e-00a1680f2547",  # Reverse Grip Barbell Triceps Extension
+    "eabcfa09-599a-4efd-8997-de107832de01",  # Standing Barbell Overhead Press
+    "d5fd808e-e883-4109-9371-cbcc727144cf",  # Wide Grip Barbell Bench Press
 }
