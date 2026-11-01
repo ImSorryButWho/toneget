@@ -188,7 +188,8 @@ same `GARMIN_TOKEN_DIR` to cache login tokens; unattended runs reuse them.
 ## Home Assistant add-on
 
 `tonal_garmin_sync/` packages `tonal_to_garmin.py` as a Home Assistant add-on that runs
-on a schedule. Add this repository under Settings > Add-ons > Add-on Store > Repositories.
+on a schedule. Add `https://github.com/ImSorryButWho/toneget#garmin-sync` under Settings > Add-ons >
+Add-on Store > Repositories (the `#garmin-sync` selects the branch).
 The add-on copies its Python sources into `tonal_garmin_sync/app/`; after changing any of
 them run `./sync_addon_sources.sh` (and `./sync_addon_sources.sh --check` to verify).
 See `tonal_garmin_sync/DOCS.md` for setup.

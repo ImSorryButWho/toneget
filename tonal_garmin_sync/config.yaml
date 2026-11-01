@@ -2,7 +2,7 @@ name: Tonal to Garmin Sync
 version: "0.1.0"
 slug: tonal_garmin_sync
 description: Adds Tonal set, rep and weight data to your Garmin strength workouts.
-url: https://github.com/curlrequests/toneget
+url: https://github.com/ImSorryButWho/toneget
 arch:
   - aarch64
   - amd64
