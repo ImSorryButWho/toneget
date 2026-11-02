@@ -152,14 +152,16 @@ def merge_tonal_and_garmin(tonal_json_path, garmin_fit_path, output_fit_path, ex
             set_mesg.set_type = SetType.ACTIVE
             set_mesg.repetitions = rep_count
             
-            # Match the Tonal app: nominal load (no chains). Barbell moves show the
-            # combined load of the cables in use; everything else shows the weight
-            # per handle. movementSide is 'Both' even for alternating/single-handle
-            # moves, but volume counts one cable-load per rep for those and two for
-            # a bilateral move, so infer the cable count from that.
+            # Nominal load (no chains). Tonal reports the weight of a single cable, but
+            # Garmin computes volume as weight x reps, so a set that uses both cables
+            # (the bar, or two handles at once) needs the combined load or Garmin's
+            # volume comes out far below Tonal's. movementSide is 'Both' even for
+            # alternating/single-handle moves, but Tonal's volume counts one cable-load
+            # per rep for those and two for a two-cable move, so infer the cable count
+            # from that.
             avg_weight = float(block.get('avgWeight') or 0)
             weight_lbs = float(block.get('baseWeight') or avg_weight)
-            if (movement_id in BARBELL_MOVEMENTS or movement_id in extra_barbell_ids) and rep_count > 0 and avg_weight > 0:
+            if rep_count > 0 and avg_weight > 0:
                 cables = round(float(block.get('volume', 0)) / (rep_count * avg_weight))
                 weight_lbs *= min(2, max(1, cables))
 
